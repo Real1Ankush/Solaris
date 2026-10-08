@@ -1,0 +1,112 @@
+@layer components {
+  .ds-mega {
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-mega);
+    line-height: 0.86;
+    letter-spacing: -0.055em;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .ds-d1 {
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-d1);
+    line-height: 0.92;
+    letter-spacing: -0.045em;
+    font-weight: 800;
+  }
+
+  .ds-d2 {
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-d2);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    font-weight: 700;
+  }
+
+  .ds-d3 {
+    font-family: var(--ds-font-display);
+    font-size: var(--ds-d3);
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    font-weight: 650;
+  }
+
+  /* Introductory copy. Wider measure than body, still bounded. */
+  .ds-lead {
+    font-size: var(--ds-lead);
+    line-height: 1.62;
+    color: var(--ds-ash);
+    max-width: 46ch;
+    text-wrap: pretty;
+  }
+
+  .ds-body {
+    font-size: var(--ds-body);
+    line-height: 1.68;
+    color: var(--ds-ash);
+    max-width: 64ch;
+    text-wrap: pretty;
+  }
+
+  .ds-body-quiet {
+    color: var(--ds-fog);
+  }
+
+  /* Technical mono label — the connective tissue of the product. */
+  .ds-label {
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-label);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ds-fog);
+  }
+
+  .ds-label-solar {
+    color: var(--ds-solar);
+  }
+
+  .ds-label-beam {
+    color: var(--ds-beam);
+  }
+
+  /* Telemetry figures. Tabular so columns do not jitter. */
+  .ds-figure {
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-d3);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-chalk);
+  }
+
+  .ds-value {
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-small);
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-chalk);
+  }
+
+  /* Eyebrow with a leading accent rule. */
+  .ds-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-label);
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ds-solar);
+  }
+
+  .ds-eyebrow::before {
+    content: "";
+    width: 1.75rem;
+    height: 1px;
+    flex: none;
+    background: currentColor;
+    opacity: 0.55;
+  }
+}

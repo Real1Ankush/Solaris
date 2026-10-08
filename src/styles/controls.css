@@ -1,0 +1,124 @@
+@layer components {
+  .ds-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6em;
+    border: 1px solid transparent;
+    border-radius: var(--ds-radius-chip);
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-label);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--ds-dur-fast) var(--ds-ease-mech),
+      border-color var(--ds-dur-fast) var(--ds-ease-mech),
+      color var(--ds-dur-fast) var(--ds-ease-mech),
+      transform var(--ds-dur-instant) var(--ds-ease-mech);
+  }
+
+  /* Physical depth response: 1px press, never a scale bounce. */
+  .ds-btn:active {
+    transform: translateY(1px);
+  }
+
+  .ds-btn:disabled,
+  .ds-btn[aria-disabled="true"] {
+    opacity: 0.38;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .ds-btn--sm {
+    padding: 0.5rem 0.85rem;
+  }
+
+  .ds-btn--md {
+    padding: 0.72rem 1.25rem;
+  }
+
+  .ds-btn--lg {
+    padding: 0.95rem 1.7rem;
+    font-size: var(--ds-small);
+  }
+
+  .ds-btn--primary {
+    background: var(--ds-solar);
+    color: #0a0f14;
+    font-weight: 600;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  }
+
+  .ds-btn--primary:hover {
+    background: var(--ds-solar-hot);
+  }
+
+  .ds-btn--secondary {
+    background: transparent;
+    border-color: var(--ds-rule-firm);
+    color: var(--ds-chalk);
+  }
+
+  .ds-btn--secondary:hover {
+    border-color: var(--ds-solar);
+    color: var(--ds-solar);
+  }
+
+  .ds-btn--ghost {
+    background: transparent;
+    color: var(--ds-ash);
+    padding-inline: 0.25rem;
+  }
+
+  .ds-btn--ghost:hover {
+    color: var(--ds-chalk);
+  }
+
+  .ds-dot {
+    flex: none;
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--ds-fog);
+  }
+
+  .ds-dot--nominal {
+    background: var(--ds-beam);
+  }
+
+  .ds-dot--active {
+    background: var(--ds-solar);
+  }
+
+  .ds-dot--warn {
+    background: var(--ds-solar);
+  }
+
+  .ds-dot--fault {
+    background: var(--ds-fault);
+  }
+
+  .ds-dot--pulse {
+    animation: ds-pulse 2.4s var(--ds-ease-instrument) infinite;
+  }
+
+  .ds-dot--pulse-fast {
+    animation: ds-pulse 1.2s var(--ds-ease-instrument) infinite;
+  }
+
+  .ds-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--ds-font-mono);
+    font-size: var(--ds-micro);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ds-fog);
+  }
+}

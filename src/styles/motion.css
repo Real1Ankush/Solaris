@@ -1,0 +1,64 @@
+@keyframes ds-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.32;
+  }
+}
+
+@keyframes ds-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer components {
+  /*
+   * Entrance primitive. GSAP/ScrollTrigger will drive most reveals in the
+   * landing pass; this is the no-JS fallback and the reduced-motion state.
+   */
+  .ds-rise {
+    animation: ds-rise var(--ds-dur-reveal) var(--ds-ease-mech) both;
+  }
+
+  /*
+   * Scan rail. Reuses the solaris-scan keyframes defined in index.css
+   * (Pass 1) rather than duplicating them under a second name.
+   */
+  .ds-scan-rail {
+    position: relative;
+    overflow: hidden;
+    height: 1px;
+    background: var(--ds-rule);
+  }
+
+  .ds-scan-rail::after {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    width: 33.3333%;
+    background: var(--ds-beam);
+    animation: solaris-scan 1.4s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-dot--pulse,
+  .ds-dot--pulse-fast,
+  .ds-scan-rail::after {
+    animation: none;
+  }
+
+  .ds-rise {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -1,0 +1,835 @@
+/*
+ * SOLARIS — 01 HERO: full-bleed inspection bay.
+ *
+ * There is deliberately no copy column and no stage box. Four absolute layers
+ * share one viewport: environment (0), WebGL field (1), editorial type (3),
+ * instrumentation (4). Every position exists to keep the machine as the focal
+ * point while the type crosses it.
+ */
+
+@layer components {
+  :root {
+    --hero-rail-h: 88px;
+    --hero-lead: clamp(34px, 5vw, 92px);
+  }
+
+  .hero-root {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    min-height: 100svh;
+    background: var(--ds-void);
+    --ds-gutter: clamp(1.25rem, 3.2vw, 4rem);
+  }
+
+  /* ── layer 0 · environment ──────────────────────────────── */
+
+  .hero-env {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* One warm source, one cool source, both anchored to the machine. */
+  .hero-root::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 68% 62%, rgba(245, 185, 66, 0.12) 0%, transparent 44%),
+      radial-gradient(circle at 14% 22%, rgba(67, 217, 255, 0.07) 0%, transparent 40%);
+  }
+
+  /* Ghost word: sits behind the canvas so the rover occludes it. */
+  .hero-ghost {
+    position: absolute;
+    top: 1vh;
+    left: -2.5vw;
+    font-size: 22vw;
+    line-height: 0.82;
+    font-weight: 800;
+    letter-spacing: -0.055em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(148, 163, 184, 0.16);
+    white-space: nowrap;
+  }
+
+  .hero-env-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--ds-grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ds-grid-line) 1px, transparent 1px);
+    background-size: 96px 96px;
+    -webkit-mask-image: radial-gradient(ellipse 74% 62% at 64% 54%, #000 0%, transparent 82%);
+    mask-image: radial-gradient(ellipse 74% 62% at 64% 54%, #000 0%, transparent 82%);
+  }
+
+  /* Soft floor falloff only — the real horizon belongs to the 3D bay. */
+  .hero-env-horizon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 52vh;
+    background: linear-gradient(to top, rgba(5, 8, 11, 0.9), transparent 72%);
+  }
+
+  /* ── layer 1 · WebGL field ──────────────────────────────── */
+
+  .hero-field {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    touch-action: pan-y;
+  }
+
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-canvas canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    outline: none;
+  }
+
+  /* Focus reticle driven by useRobotTracking across the whole viewport. */
+  .hero-reticle {
+    position: absolute;
+    z-index: 3;
+    width: 58px;
+    height: 58px;
+    margin: -29px 0 0 -29px;
+    pointer-events: none;
+    border: 1px solid rgba(67, 217, 255, 0.55);
+    border-radius: 999px;
+    mix-blend-mode: screen;
+  }
+
+  .hero-reticle::before,
+  .hero-reticle::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--ds-beam);
+  }
+
+  .hero-reticle::before {
+    width: 16px;
+    height: 1px;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-reticle::after {
+    width: 1px;
+    height: 16px;
+    transform: translate(-50%, -50%);
+  }
+
+  /* ── spatial instrumentation ────────────────────────────── */
+
+  .hero-hud {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .hero-hud-cell {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+    width: max-content;
+  }
+
+  .hero-hud-cell dt {
+    font-family: var(--ds-font-mono);
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ds-beam);
+  }
+
+  .hero-hud-cell dd {
+    margin: 0;
+    font-family: var(--ds-font-mono);
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-chalk);
+  }
+
+  /* Left callouts hang off a hairline that points into the scene. */
+  .hero-hud-cell--left {
+    left: var(--ds-gutter);
+    padding-left: 0.65rem;
+    border-left: 1px solid var(--ds-rule-firm);
+  }
+
+  .hero-hud-cell--left::after {
+    content: "";
+    position: absolute;
+    left: calc(100% + 0.1rem);
+    top: 0.62rem;
+    width: var(--hero-lead);
+    height: 1px;
+    background: linear-gradient(90deg, var(--ds-rule-firm), rgba(67, 217, 255, 0.06));
+  }
+
+  .hero-hud-cell--left::before {
+    content: "";
+    position: absolute;
+    left: calc(100% + 0.1rem + var(--hero-lead) - 2px);
+    top: calc(0.62rem - 2px);
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--ds-beam);
+  }
+
+  /* Right callouts mirror it. */
+  .hero-hud-cell--right {
+    right: var(--ds-gutter);
+    padding-right: 0.65rem;
+    border-right: 1px solid var(--ds-rule-firm);
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  .hero-hud-cell--right::after {
+    content: "";
+    position: absolute;
+    right: calc(100% + 0.1rem);
+    top: 0.62rem;
+    width: var(--hero-lead);
+    height: 1px;
+    background: linear-gradient(270deg, var(--ds-rule-firm), rgba(67, 217, 255, 0.06));
+  }
+
+  .hero-hud-cell--right::before {
+    content: "";
+    position: absolute;
+    right: calc(100% + 0.1rem + var(--hero-lead) - 2px);
+    top: calc(0.62rem - 2px);
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--ds-beam);
+  }
+
+  .hero-hud-state {
+    position: absolute;
+    left: var(--ds-gutter);
+    bottom: calc(var(--hero-rail-h) + 16px);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--ds-font-mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ds-fog);
+  }
+
+  .hero-hud-state-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--ds-solar);
+    animation: ds-pulse 2.4s var(--ds-ease-instrument) infinite;
+  }
+
+  /* ── layer 2 · editorial type ───────────────────────────── */
+
+  .hero-type {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    position: absolute;
+    top: clamp(5.2rem, 11vh, 7.5rem);
+    left: var(--ds-gutter);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-family: var(--ds-font-mono);
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ds-ash);
+  }
+
+  .hero-eyebrow-index {
+    color: var(--ds-solar);
+  }
+
+  .hero-eyebrow-rule {
+    width: clamp(28px, 4vw, 76px);
+    height: 1px;
+    background: var(--ds-rule-firm);
+  }
+
+  .hero-headline {
+    position: absolute;
+    top: clamp(8.5rem, 17.5vh, 13rem);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding-inline: var(--ds-gutter);
+    display: flex;
+    flex-direction: column;
+    perspective: 900px;
+  }
+
+  .hero-line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.04em;
+  }
+
+  .hero-line-mask--2 {
+    margin-left: 3vw;
+  }
+
+  .hero-line {
+    display: block;
+    font-weight: 800;
+    line-height: 0.86;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    will-change: transform;
+  }
+
+  .hero-line--1 {
+    font-size: clamp(2.8rem, 7.4vw, 9rem);
+    color: var(--ds-chalk);
+  }
+
+  /* Outlined so the machine reads straight through the widest line. */
+  .hero-line--2 {
+    font-size: clamp(3.6rem, 13.4vw, 16rem);
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(233, 237, 245, 0.46);
+  }
+
+  .hero-line--3 {
+    font-size: clamp(3rem, 9.4vw, 11rem);
+    color: var(--ds-solar);
+  }
+
+  /* One short machine annotation, not a paragraph block. */
+  .hero-annotation {
+    position: absolute;
+    right: var(--ds-gutter);
+    top: 64%;
+    max-width: min(32ch, 25vw);
+    padding-left: calc(var(--hero-lead) + 0.75rem);
+    font-family: var(--ds-font-mono);
+    font-size: 0.68rem;
+    line-height: 1.75;
+    color: var(--ds-ash);
+    text-align: left;
+  }
+
+  .hero-annotation strong {
+    color: var(--ds-chalk);
+    font-weight: 500;
+  }
+
+  .hero-annotation-lead {
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: var(--hero-lead);
+    height: 1px;
+    background: linear-gradient(90deg, rgba(67, 217, 255, 0.06), var(--ds-rule-firm));
+  }
+
+  .hero-annotation-lead::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--ds-beam);
+  }
+
+  /* ── layer 3 · instrument rail ──────────────────────────── */
+
+  .hero-rail {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 4;
+    display: grid;
+    grid-template-columns: minmax(150px, 0.8fr) minmax(0, 2.7fr) minmax(130px, 0.85fr) auto;
+    grid-template-areas: "head list note actions";
+    align-items: stretch;
+    min-height: var(--hero-rail-h);
+    background: linear-gradient(180deg, rgba(5, 8, 11, 0.72) 0%, rgba(5, 8, 11, 0.96) 100%);
+    border-top: 1px solid var(--ds-rule);
+  }
+
+  .hero-rail::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(67, 217, 255, 0.5) 42%, transparent);
+    opacity: 0.5;
+  }
+
+  .hero-rail-head {
+    grid-area: head;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    padding-inline: clamp(0.9rem, 1.6vw, 1.6rem);
+    border-right: 1px solid var(--ds-rule);
+  }
+
+  .hero-rail-kicker {
+    font-family: var(--ds-font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ds-solar);
+  }
+
+  .hero-rail-sub {
+    font-family: var(--ds-font-mono);
+    font-size: 0.54rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ds-fog);
+  }
+
+  .hero-rail-list {
+    grid-area: list;
+    display: flex;
+    align-items: stretch;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .hero-rail-item {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.15rem;
+    padding: 0.85rem clamp(0.7rem, 1.2vw, 1.25rem);
+    border-right: 1px solid var(--ds-rule);
+  }
+
+  .hero-rail-item dt {
+    font-family: var(--ds-font-mono);
+    font-size: 0.53rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ds-fog);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hero-rail-item dd {
+    margin: 0;
+    font-family: var(--ds-font-mono);
+    font-size: clamp(0.92rem, 1.2vw, 1.12rem);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--ds-chalk);
+    white-space: nowrap;
+  }
+
+  .hero-rail-hint {
+    font-family: var(--ds-font-mono);
+    font-size: 0.5rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(154, 168, 183, 0.5);
+  }
+
+  .hero-rail-note {
+    grid-area: note;
+    align-self: center;
+    padding-inline: clamp(0.75rem, 1.2vw, 1.2rem);
+    font-family: var(--ds-font-mono);
+    font-size: 0.53rem;
+    line-height: 1.7;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ds-fog);
+  }
+
+  .hero-rail-actions {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-inline: clamp(0.75rem, 1.4vw, 1.5rem);
+    border-left: 1px solid var(--ds-rule);
+  }
+
+  .hero-cue {
+    position: absolute;
+    right: calc(var(--ds-gutter) - 0.35rem);
+    top: 50%;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    writing-mode: vertical-rl;
+    transform: translateY(-50%);
+    font-family: var(--ds-font-mono);
+    font-size: 0.54rem;
+    letter-spacing: 0.34em;
+    color: var(--ds-fog);
+  }
+
+  .hero-cue-line {
+    width: 1px;
+    height: clamp(40px, 7vh, 76px);
+    background: linear-gradient(to bottom, var(--ds-rule-firm), transparent);
+  }
+
+  /* ── schematic fallback (no WebGL) ──────────────────────── */
+
+  .hero-schematic {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .hero-schematic svg {
+    position: absolute;
+    right: -2vw;
+    bottom: var(--hero-rail-h);
+    width: min(92vw, 1180px);
+    height: auto;
+    opacity: 0.92;
+  }
+
+  .hero-schematic-label {
+    position: absolute;
+    left: var(--ds-gutter);
+    bottom: calc(var(--hero-rail-h) + 54px);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: min(280px, 60vw);
+  }
+
+  /* ── responsive recomposition (not a column collapse) ───── */
+
+  @media (max-width: 1439px) {
+    .hero-rail {
+      grid-template-columns: minmax(140px, 0.7fr) minmax(0, 2.7fr) auto;
+      grid-template-areas: "head list actions";
+    }
+    .hero-rail-note { display: none; }
+  }
+
+  @media (max-width: 1023px) {
+    .hero-annotation { display: none; }
+    .hero-eyebrow { gap: 0.6rem; letter-spacing: 0.16em; }
+    .hero-eyebrow span:last-child { display: none; }
+    .hero-eyebrow-rule { display: none; }
+    .hero-hud-cell--core,
+    .hero-hud-cell--optics { display: none; }
+    .hero-hud-cell--node { top: 58% !important; }
+    .hero-hud-cell--head { top: 26% !important; }
+    .hero-cue { display: none; }
+    .hero-rail-head .hero-rail-sub { display: none; }
+  }
+
+  @media (max-width: 767px) {
+    :root { --hero-rail-h: auto; }
+
+    .hero-root {
+      min-height: max(660px, 100svh);
+      --ds-gutter: 1.25rem;
+    }
+
+    .hero-ghost {
+      top: 9vh;
+      left: -6vw;
+      font-size: 34vw;
+      -webkit-text-stroke-width: 1px;
+      -webkit-text-stroke-color: rgba(148, 163, 184, 0.13);
+    }
+
+    .hero-eyebrow {
+      top: 4.6rem;
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+    }
+
+    .hero-headline {
+      top: clamp(6.4rem, 15vh, 8.5rem);
+    }
+
+    .hero-line--1 { font-size: 10.5vw; }
+    .hero-line--2 { font-size: 14vw; margin-left: 0; -webkit-text-stroke-width: 1px; }
+    .hero-line--3 { font-size: 11vw; }
+
+    .hero-reticle { display: none; }
+
+    /* HUD reduces to one callout + the state line so it never crowds the rover. */
+    .hero-hud-cell--node { display: none; }
+    .hero-hud-cell--head {
+      top: auto !important;
+      bottom: 268px;
+      right: auto !important;
+      left: var(--ds-gutter);
+      padding-right: 0;
+      padding-left: 0.55rem;
+      border-right: 0;
+      border-left: 1px solid var(--ds-rule-firm);
+      text-align: left;
+      align-items: flex-start;
+    }
+    .hero-hud-cell--head::after,
+    .hero-hud-cell--head::before { display: none; }
+
+    .hero-hud-state {
+      bottom: 236px;
+      font-size: 0.5rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* Rail becomes a two-row instrument block, not four cards. */
+    .hero-rail {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "head"
+        "list"
+        "actions";
+      min-height: 0;
+      background: linear-gradient(180deg, rgba(5, 8, 11, 0.86) 0%, rgba(5, 8, 11, 0.98) 100%);
+    }
+
+    .hero-rail-head {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 0.5rem 1.25rem;
+      border-right: 0;
+      border-bottom: 1px solid var(--ds-rule);
+    }
+    .hero-rail-head .hero-rail-sub { display: block; }
+
+    .hero-rail-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--ds-rule);
+    }
+
+    .hero-rail-item {
+      padding: 0.55rem 1.25rem;
+      border-right: 1px solid var(--ds-rule);
+      border-bottom: 1px solid var(--ds-rule);
+    }
+    .hero-rail-item:nth-child(2n) { border-right: 0; }
+    .hero-rail-item:nth-last-child(-n + 2) { border-bottom: 0; }
+    .hero-rail-item dt { font-size: 0.48rem; letter-spacing: 0.12em; }
+    .hero-rail-item dd { font-size: 0.92rem; }
+    .hero-rail-hint { display: none; }
+
+    .hero-rail-actions {
+      padding: 0.7rem 1.25rem;
+      border-left: 0;
+    }
+    .hero-rail-actions .ds-btn { flex: 1 1 0; }
+
+    .hero-schematic svg {
+      right: -18vw;
+      bottom: 300px;
+      width: 130vw;
+    }
+    .hero-schematic-label { bottom: 320px; }
+  }
+
+  @media (max-width: 389px) {
+    .hero-line--2 { font-size: 13.2vw; }
+    .hero-rail-actions { flex-direction: column; align-items: stretch; }
+  }
+
+  /* ── landing navigation: instrument, not a SaaS bar ─────── */
+
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    border-bottom: 1px solid transparent;
+    transition:
+      background-color var(--ds-dur-base) var(--ds-ease-mech),
+      border-color var(--ds-dur-base) var(--ds-ease-mech);
+  }
+
+  .site-nav.is-scrolled {
+    background: rgba(5, 8, 11, 0.92);
+    border-bottom-color: var(--ds-rule);
+  }
+
+  .site-nav-shell {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.75rem, 2vw, 2rem);
+    height: 60px;
+    padding-inline: var(--ds-gutter);
+  }
+
+  .site-nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex: none;
+  }
+
+  .site-nav-mark {
+    position: relative;
+    width: 22px;
+    height: 22px;
+    border: 1px solid rgba(245, 185, 66, 0.55);
+  }
+
+  .site-nav-mark::before,
+  .site-nav-mark::after {
+    content: "";
+    position: absolute;
+    background: var(--ds-solar);
+  }
+  .site-nav-mark::before {
+    left: 50%;
+    top: 3px;
+    bottom: 3px;
+    width: 1px;
+    transform: translateX(-50%);
+  }
+  .site-nav-mark::after {
+    top: 50%;
+    left: 3px;
+    right: 3px;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  .site-nav-word {
+    font-family: var(--ds-font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--ds-chalk);
+  }
+
+  .site-nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.5rem, 1.4vw, 1.4rem);
+    margin-left: auto;
+  }
+
+  .site-nav-link {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.4rem 0;
+    font-family: var(--ds-font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ds-fog);
+    transition: color var(--ds-dur-fast) var(--ds-ease-mech);
+  }
+
+  .site-nav-link:hover { color: var(--ds-chalk); }
+
+  .site-nav-link-index {
+    font-size: 0.5rem;
+    color: rgba(154, 168, 183, 0.45);
+  }
+
+  .site-nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--ds-beam);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--ds-dur-base) var(--ds-ease-mech);
+  }
+
+  .site-nav-link.is-active { color: var(--ds-chalk); }
+  .site-nav-link.is-active .site-nav-link-index { color: var(--ds-beam); }
+  .site-nav-link.is-active::after { transform: scaleX(1); }
+
+  .site-nav-state {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding-left: clamp(0.6rem, 1.4vw, 1.4rem);
+    border-left: 1px solid var(--ds-rule);
+    font-family: var(--ds-font-mono);
+    font-size: 0.53rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ds-fog);
+    flex: none;
+  }
+
+  .site-nav-state-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--ds-solar);
+  }
+
+  .site-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: none;
+  }
+
+  @media (max-width: 1180px) {
+    .site-nav-links { display: none; }
+  }
+
+  @media (max-width: 639px) {
+    .site-nav-shell { height: 54px; gap: 0.6rem; }
+    .site-nav-state { display: none; }
+    .site-nav-actions .ds-btn--secondary { display: none; }
+    .site-nav-word { font-size: 0.65rem; letter-spacing: 0.24em; }
+  }
+}

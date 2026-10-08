@@ -1,0 +1,71 @@
+@layer components {
+  /* Technical grid. Masked so it fades rather than tiling to the edges. */
+  .ds-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(var(--ds-grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--ds-grid-line) 1px, transparent 1px);
+    background-size: var(--ds-grid-size) var(--ds-grid-size);
+  }
+
+  .ds-grid--fade {
+    mask-image: radial-gradient(circle at 50% 42%, black 0%, transparent 78%);
+  }
+
+  .ds-grid--floor {
+    mask-image: linear-gradient(to top, black 0%, transparent 72%);
+  }
+
+  /*
+   * Directional wash. One light source, anchored by the caller via --x/--y.
+   * Not a drifting blob.
+   */
+  .ds-illumination {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at var(--x, 78%) var(--y, 18%),
+      rgba(245, 185, 66, 0.1) 0%,
+      transparent 46%
+    );
+  }
+
+  .ds-illumination--cool {
+    background: radial-gradient(
+      circle at var(--x, 22%) var(--y, 14%),
+      rgba(67, 217, 255, 0.08) 0%,
+      transparent 44%
+    );
+  }
+
+  /* Horizon for full-bleed closing sections. */
+  .ds-horizon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 42vh;
+    pointer-events: none;
+    background:
+      linear-gradient(to top, rgba(245, 185, 66, 0.07), transparent 62%),
+      repeating-linear-gradient(90deg, var(--ds-grid-line) 0 1px, transparent 1px 88px);
+  }
+
+  /* Restrained texture. Fixed-tile SVG grain, no external asset. */
+  .ds-grain {
+    position: relative;
+  }
+
+  .ds-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.32;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  }
+}

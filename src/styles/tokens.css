@@ -1,0 +1,68 @@
+/*
+ * SOLARIS — token layer.
+ *
+ * Plain :root rather than Tailwind's @theme on purpose: @theme tree-shakes
+ * variables it does not see used by generated utilities, and the classes in
+ * this design system consume these via var(). A :root block always emits.
+ *
+ * Consume as text-[var(--ds-solar)], bg-[var(--ds-void)] and so on,
+ * matching the existing var(--amber) convention in this codebase.
+ */
+
+:root {
+  /* surfaces */
+  --ds-void: #05080b;
+  --ds-abyss: #0a1117;
+  --ds-graphite: #0f1720;
+  --ds-steel: #141c25;
+  --ds-chalk: #e9edf5;
+  --ds-ash: #9aa8b7;
+  --ds-fog: rgba(148, 163, 184, 0.65);
+  --ds-rule: rgba(148, 163, 184, 0.15);
+  --ds-rule-firm: rgba(148, 163, 184, 0.28);
+  --ds-panel: rgba(11, 16, 20, 0.9);
+  --ds-panel-inset: rgba(5, 8, 11, 0.6);
+  --ds-beam-line: rgba(67, 217, 255, 0.8);
+
+  /* accents */
+  --ds-solar: #f5b942;
+  --ds-solar-hot: #ffc964;
+  --ds-solar-dim: rgba(245, 185, 66, 0.12);
+  --ds-beam: #43d9ff;
+  --ds-beam-dim: rgba(67, 217, 255, 0.14);
+  --ds-fault: #ff6a5b;
+
+  /* type */
+  --ds-font-display: "Inter Variable", "Inter", "Segoe UI", sans-serif;
+  --ds-font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, monospace;
+
+  --ds-mega: clamp(3.6rem, 10.5vw, 12rem);
+  --ds-d1: clamp(2.9rem, 6.2vw, 6.6rem);
+  --ds-d2: clamp(2rem, 3.4vw, 3.4rem);
+  --ds-d3: clamp(1.3rem, 1.8vw, 1.8rem);
+  --ds-lead: clamp(1.02rem, 1.2vw, 1.18rem);
+  --ds-body: 0.95rem;
+  --ds-small: 0.82rem;
+  --ds-label: 0.68rem;
+  --ds-micro: 0.6rem;
+
+  /* motion */
+  --ds-dur-instant: 90ms;
+  --ds-dur-fast: 160ms;
+  --ds-dur-base: 240ms;
+  --ds-dur-slow: 420ms;
+  --ds-dur-reveal: 680ms;
+  --ds-ease-mech: cubic-bezier(0.22, 1, 0.36, 1);
+  --ds-ease-instrument: cubic-bezier(0.65, 0, 0.35, 1);
+  --ds-ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* geometry */
+  --ds-radius-hair: 2px;
+  --ds-radius-chip: 3px;
+  --ds-shadow-panel: 0 18px 44px -28px rgba(0, 0, 0, 0.92);
+
+  /* composition */
+  --ds-grid-size: 72px;
+  --ds-grid-line: rgba(148, 163, 184, 0.06);
+  --ds-gutter: clamp(1.25rem, 3vw, 3.5rem);
+}

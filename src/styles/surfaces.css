@@ -1,0 +1,104 @@
+@layer components {
+  /*
+   * Industrial panel. Hairline rule, one top highlight, negligible radius,
+   * and a shadow that sits under it rather than glowing out of it.
+   * Deliberately not a rounded card.
+   */
+  .ds-panel {
+    position: relative;
+    background: linear-gradient(
+      180deg,
+      rgba(18, 24, 31, 0.72) 0%,
+      rgba(8, 12, 16, 0.86) 100%
+    );
+    border: 1px solid var(--ds-rule);
+    border-radius: var(--ds-radius-hair);
+    box-shadow: var(--ds-shadow-panel);
+  }
+
+  .ds-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.07) 22%,
+      rgba(255, 255, 255, 0.07) 78%,
+      transparent
+    );
+  }
+
+  /* Recessed variant for viewports and readouts. */
+  .ds-inset {
+    background: var(--ds-panel-inset);
+    border: 1px solid var(--ds-rule);
+    border-radius: var(--ds-radius-hair);
+    box-shadow: inset 0 1px 12px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Pointer-reactive. Lift is 1px and border-only — no scale, no glow. */
+  .ds-interactive {
+    transition:
+      border-color var(--ds-dur-fast) var(--ds-ease-mech),
+      background-color var(--ds-dur-fast) var(--ds-ease-mech),
+      transform var(--ds-dur-fast) var(--ds-ease-mech);
+  }
+
+  .ds-interactive:hover {
+    border-color: var(--ds-rule-firm);
+    transform: translateY(-1px);
+  }
+
+  .ds-interactive:active {
+    transform: translateY(0);
+  }
+
+  .ds-rule {
+    height: 1px;
+    border: 0;
+    background: var(--ds-rule);
+  }
+
+  .ds-rule-firm {
+    height: 1px;
+    border: 0;
+    background: var(--ds-rule-firm);
+  }
+
+  /* Mission-control corner brackets. Pure CSS, no assets. */
+  .ds-corners::after {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--ds-beam-line), var(--ds-beam-line)) 0 0 / 1px 9px no-repeat,
+      linear-gradient(var(--ds-beam-line), var(--ds-beam-line)) 0 0 / 9px 1px no-repeat,
+      linear-gradient(var(--ds-beam-line), var(--ds-beam-line)) 100% 0 / 1px 9px no-repeat,
+      linear-gradient(var(--ds-beam-line), var(--ds-beam-line)) 100% 0 / 9px 1px no-repeat,
+      linear-gradient(var(--ds-beam-line), var(--ds-beam-line)) 0 100% / 1px 9px no-repeat,
+      linear-gradient(var(--ds-beam-line), var(--ds-beam-line)) 0 100% / 9px 1px no-repeat,
+      linear-gradient(var(--ds-beam-line), var(--ds-beam-line)) 100% 100% / 1px 9px no-repeat,
+      linear-gradient(var(--ds-beam-line), var(--ds-beam-line)) 100% 100% / 9px 1px no-repeat;
+    opacity: 0.55;
+  }
+
+  /* Composition helper. Asymmetric by default, not capped at 1440. */
+  .ds-shell {
+    width: 100%;
+    max-width: 1920px;
+    margin-inline: auto;
+    padding-inline: var(--ds-gutter);
+  }
+
+  .ds-shell-narrow {
+    max-width: 1180px;
+  }
+
+  .ds-stack > * + * {
+    margin-top: var(--ds-stack-gap, 1rem);
+  }
+}

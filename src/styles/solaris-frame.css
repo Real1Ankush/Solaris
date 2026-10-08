@@ -1,0 +1,19 @@
+.kage-page,
+.solaris-page-frame {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #080808;
+}
+
+.solaris-page-frame iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #080808;
+}
